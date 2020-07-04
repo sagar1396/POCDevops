@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "dmn-js": "^0.6.0",
-    "jquery": "^2.1.1",
+    "jquery": "^3.5.1",
     "lodash": "^3.0.0"
   }
 }
