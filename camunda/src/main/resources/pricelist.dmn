@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/DMN/20151101/dmn11.xsd" id="definitions" name="definitions" namespace="http://camunda.org/schema/1.0/dmn">
+  <decision id="pricelist" name="PriceList">
+    <decisionTable id="decisionTable" hitPolicy="COLLECT" aggregation="SUM">
+      <input id="input1" label="Service">
+        <inputExpression id="inputExpression1" typeRef="string">        <text>govservice</text>
+</inputExpression>
+      </input>
+      <output id="output1" label="Price" name="summary" typeRef="double" />
+      <rule id="row-72464069-3">
+        <inputEntry id="UnaryTests_0zmcdq6">        <text><![CDATA["RegisterNewCompany"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_1ehb89n">        <text>12.30</text>
+</outputEntry>
+      </rule>
+      <rule id="row-72464069-4">
+        <inputEntry id="UnaryTests_0g5512k">        <text><![CDATA["OrderDriverLicense"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_0v3t89p">        <text>22.00</text>
+</outputEntry>
+      </rule>
+      <rule id="row-72464069-5">
+        <inputEntry id="UnaryTests_0582crg">        <text><![CDATA["OrderPassport"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_100afca">        <text><![CDATA["9.00"]]></text>
+</outputEntry>
+      </rule>
+      <rule id="row-72464069-6">
+        <inputEntry id="UnaryTests_0fha0sl">        <text><![CDATA["ByeALand"]]></text>
+</inputEntry>
+        <outputEntry id="LiteralExpression_06dk8fw">        <text><![CDATA["11.60"]]></text>
+</outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+</definitions>

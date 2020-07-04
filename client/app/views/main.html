@@ -1,0 +1,20 @@
+<div class="layout">
+	<p><b>Choose a procedure:</b></p>
+	<table>
+		<div ng-repeat="process in processes"
+			data-process-id="{{ process.id }}"
+			data-process-key="{{ process.key }}" ng-click="startProcess(process.id)">
+			<a>{{ (process.name || process.id) }}</a>
+			<a ng-if="process.description">{{ process.description }}</a>
+		</div>
+	</table>
+</div>
+<br>
+<div class="layout">
+	<p><b>Started procedures:</b></p>
+	<table>
+		<tr ng-repeat="task in tasks">
+			<td><a ng-href="#/task/{{ task.id }}">{{ task.name }}  {{ task.created }}</a></td>
+		</tr>
+	</table>
+</div>

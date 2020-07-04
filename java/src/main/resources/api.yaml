@@ -1,0 +1,361 @@
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "Java Docker"
+host: "unctad.redfunction.ee"
+basePath: "/java/v2016/06"
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /engine-rest/engine/default/deployment:
+    get:
+      description: "Get Deployments"
+      operationId: "getDeploymentList"
+      responses:
+        200:
+          description: "Returns deployments."
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Deployment"
+        400:
+          description: "Invalid parameters."  
+  /engine-rest/engine/default/deployment/{deploymentId}/xml:
+    get:
+      description: "Get deployment xml"
+      operationId: "getDeploymentXml"
+      parameters: 
+        - name: deploymentId
+          in: path
+          type: string
+          description: "deploymentId"
+          required: true
+      responses:
+        200:
+          description: "Returns deployment xml."
+          schema:
+            type: string
+        400:
+          description: "Invalid parameters."  
+  /engine-rest/engine/default/deployment/create:
+    post:
+      description: "Deploy new process definition."
+      operationId: "deployProcessDefinition"
+      consumes:
+        - multipart/form-data
+      parameters: 
+        - name: deployment-name
+          in: header
+          type: string
+          description: "The name for the deployment to be created"
+          required: true
+        - name: content
+          in: body
+          description: "BPMN xml data"
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: "Request successful."
+  /engine-rest/engine/default/process-definition:
+    get:
+      description: "Return list of process definitions."
+      operationId: "getProcessDefinitionList"
+      responses:
+        200:
+          description: Returns process definitions.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ProcessDefinition"
+        400:
+          description: "Invalid parameters."  
+  /engine-rest/engine/default/process-definition/count:
+    get:
+      description: "Return count of process definitions."
+      operationId: "getProcessDefinitionCount"
+      responses:
+        200:
+          description: Returns count of process definitions.
+          schema: 
+            $ref: "#/definitions/Count"
+        400:
+          description: "Invalid parameters." 
+  /engine-rest/engine/default/process-definition/{processDefinitionId}/start:
+    post:
+      description: "Instantiates a given process definition."
+      operationId: "startProcess"
+      parameters: 
+        - name: processDefinitionId
+          in: path
+          type: string
+          description: "processDefinitionId"
+          required: true
+      responses:
+        200:
+          description: Returns the taskId.
+          schema: 
+            $ref: "#/definitions/TaskId"
+        400:
+          description: "The path parameter key has no value." 
+        404:
+          description: "Process definition with given key does not exist." 
+  /engine-rest/engine/default/process-definition/key/{key}/xml:
+    get:
+      description: "Return BPMN xml."
+      operationId: "getProcessDefinitionXml"
+      produces:
+        - application/xml
+      parameters: 
+        - name: key
+          in: path
+          type: string
+          description: "key"
+          required: true
+      responses:
+        200:
+          description: Returns BPMN xml.
+          schema: 
+            type: string
+        400:
+          description: "Invalid parameters." 
+          
+          
+  /engine-rest/engine/default/decision-definition:
+    get:
+      description: "Return list of decision definitions."
+      operationId: "getDecisionDefinitionList"
+      responses:
+        200:
+          description: Returns decision definitions.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/DecisionDefinition"
+        400:
+          description: "Invalid parameters."  
+  /engine-rest/engine/default/decision-definition/count:
+    get:
+      description: "Return count of decision definitions."
+      operationId: "getDecisionDefinitionCount"
+      responses:
+        200:
+          description: Returns count of decision definitions.
+          schema: 
+            $ref: "#/definitions/Count"
+        400:
+          description: "Invalid parameters." 
+  /engine-rest/engine/default/decision-definition/{decisionDefinitionId}/evaluate:
+    post:
+      description: "Evaluates a given decision definition."
+      operationId: "evaluateDecision"
+      parameters: 
+        - name: decisionDefinitionId
+          in: path
+          type: string
+          description: "decisionDefinitionId"
+          required: true
+        - name: content
+          in: body
+          description: "json to evaluate"
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: Returns the taskId.
+          schema: 
+            type: string
+        400:
+          description: "The path parameter key has no value." 
+        404:
+          description: "Process definition with given key does not exist." 
+  /engine-rest/engine/default/decision-definition/key/{key}/xml:
+    get:
+      description: "Return BPMN xml."
+      operationId: "getDecisionDefinitionXml"
+      produces:
+        - application/xml
+      parameters: 
+        - name: key
+          in: path
+          type: string
+          description: "key"
+          required: true
+      responses:
+        200:
+          description: Returns BPMN xml.
+          schema: 
+            type: string
+        400:
+          description: "Invalid parameters." 
+  /engine-rest/engine/default/task:
+    get:
+      description: "Return list of opened tasks."
+      operationId: "getTaskList"
+      responses:
+        200:
+          description: Returns list of tasks.
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/ProcessTask"
+        400:
+          description: "Invalid parameters."  
+  /task/{taskId}:
+    get: 
+      description: "Return a task form."
+      operationId: "GetTaskForm"
+      parameters: 
+        - name: taskId
+          in: path
+          type: string
+          description: "taskId"
+          required: true
+      responses:
+        200:
+          description: Returns the submission.
+          schema:
+            type: string
+        401:
+          description: "Unauthorized."  
+        404:
+          description: "Resource not found."  
+        500:
+          description: "An error has occurred."
+  /task/submission/{taskId}:
+    post: 
+      description: "Validates and saves the data"
+      operationId: "saveTaskSubmission"
+      parameters: 
+        - name: taskId
+          in: path
+          type: string
+          required: true
+          description: "The task ID."
+        - name: data
+          in: formData
+          description: "data model"
+          required: true
+      responses: 
+        "201":
+          description: "The resource has been created."
+        "400":
+          description: "An error has occured trying to create the resource."
+        "401":
+          description: "Unauthorized. Note that anonymous submissions are *enabled* by default."
+    get: 
+      description: "Return a specific submission data."
+      operationId: "Gets task submission"
+      parameters:
+        - name: taskId
+          in: path
+          type: string
+          required: true
+          description: The task ID.
+      responses:
+        200:
+          description: Returns the submission.
+          schema:
+            type: string
+        401:
+          description: "Unauthorized."  
+        404:
+          description: "Resource not found."  
+        500:
+          description: "An error has occurred."
+definitions:
+    DecisionDefinition:
+      type: "object"
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        category:
+          type: string
+        name:
+          type: string
+    Deployment:
+      type: "object"
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        source:
+          type: string
+        tenantId:
+          type: string
+        deploymentTime:
+          type: date
+    DeploymentResource:
+        id:
+          type: string
+        name:
+          type: string
+        deploymentId:
+          type: string
+    ProcessDefinition:
+      type: "object"
+      properties:
+        id:
+          type: string
+        key:
+          type: string
+        category:
+          type: string
+        description:
+          type: string
+        name:
+          type: string
+    ProcessTask:
+      type: "object"
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        assignee:
+          type: string
+        owner:
+          type: string
+        created:
+          type: string
+        description:
+           type: string
+    TaskForm:
+      type: "object"
+      properties:
+        key:
+          type: string
+        contextPath:
+          type: string
+    Count:
+      type: "object"
+      properties:
+        count:
+          type: number
+    TaskId:
+      type: "object"
+      properties:
+        id:
+          type: string
+    Submission:
+      type: "object"
+    ErrorModel: 
+      type: "object"
+      required: 
+        - "code"
+        - "message"
+      properties: 
+        code: 
+          type: "integer"
+          format: "int32"
+        message: 
+          type: "string"

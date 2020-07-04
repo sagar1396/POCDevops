@@ -1,0 +1,67 @@
+version: "2"
+services:
+  nginx:
+    build: ./nginx
+    ports:
+    - "6006:80"
+    image: krixerx/docker-nginx
+  client:
+    build: ./client
+    ports:
+    - "6005:80"
+    image: krixerx/docker-client
+  bpmnjs:
+    build: ./bpmn-js
+    ports:
+    - "6003:80"
+    image: krixerx/bpmn-js
+  dmnjs:
+    build: ./dmn-js
+    ports:
+    - "6004:80"
+    image: krixerx/dmn-js
+  java:
+    build: ./java
+    ports:
+    - "6002:8080"
+    image: krixerx/docker-java
+  mongo:
+    ports:
+    - "6008:27017"
+    image: mongo
+  formio:
+    build: ./formio
+    ports:
+    - "3001:3001"
+    image: krixerx/docker-formio
+    links:
+    - mongo
+  camunda:
+    build: ./camunda
+    ports:
+    - "6009:8080"
+    image: krixerx/docker-camunda
+  cadvisor:
+    image: google/cadvisor
+    ports:
+    - "6007:8080"
+    volumes:
+    - "../:/rootfs:ro"
+    - "/var/run:/var/run:rw"
+    - "/sys:/sys:ro"
+    - "/var/lib/docker/:/var/lib/docker:ro"
+  haproxy:
+    build: ./haproxy
+    image: krixerx/docker-haproxy
+    ports:
+    - "6001:6001"
+    - "1936:1936"
+    links:
+    - nginx
+    - client
+    - bpmnjs
+    - dmnjs
+    - java
+    - formio
+    - camunda
+    - cadvisor
