@@ -42,6 +42,6 @@
   "dependencies": {
     "dmn-js": "^0.6.0",
     "jquery": "^2.1.1",
-    "lodash": "^3.0.0"
+    "lodash": "^4.17.19"
   }
 }
